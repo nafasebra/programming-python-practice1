@@ -1,0 +1,51 @@
+# Main Program
+def main():
+    flights = []
+
+    while True:
+        print("\n=== سیستم رزرو پرواز ===")
+        print("1. یک پرواز جدید اضافه کنید")
+        print("2. نمایش پروازهای موجود")
+        print("3. یک صندلی رزرو کنید")
+        print("4. خارج شدن")
+
+        choice = input("انتخاب خود را وارد کنید (1-4): ")
+
+        if choice == '1':
+            flight_type = input("نوع پرواز (داخلی/بین المللی) را وارد کنید: ").capitalize()
+            departure_time = input("زمان حرکت را وارد کنید: ")
+            origin_country = input("کشور مبدا را وارد کنید: ")
+            destination_country = input("کشور مقصد را وارد کنید: ")
+
+            flights = Flight(flight_type, departure_time, origin_country, destination_country)
+            flights.append(flight)
+
+        elif choice == '2':
+            if not flights:
+                print("هیچ پروازی موجود نیست")
+            else:
+                print("\nپروازهای موجود:")
+                for i, flight in enumerate(flights, start=1):
+                    print(f"پرواز {i}:")
+                    flight.display_flight_info()
+
+        elif choice == '3':
+            if not flights:
+                print("هیچ پروازی موجود نیست لطفا ابتدا یک پرواز اضافه کنید.")
+            else:
+                # Reserve a seat
+                flight_number = int(input("\nشماره پروازی را که می خواهید برای آن صندلی رزرو کنید وارد کنید: ")) - 1
+                seat_type = int(input("نوع صندلی را وارد کنید (1 برای فرست کلاس، 2 برای کلاس اکونومی): "))
+
+                if 0 <= flight_number < len(flights) and 1 <= seat_type <= 2:
+                    flights[flight_number].reserve_seat(seat_type)
+                else:
+                    print("نوع پرواز یا صندلی نامعتبر است.")
+
+        elif choice == '4':
+            print("خروج از برنامه")
+            break
+
+        else:
+            print("انتخاب نامعتبر لطفا عددی بین 1 تا 4 وارد کنید.")
+
