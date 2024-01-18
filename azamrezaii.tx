@@ -1,97 +1,84 @@
-# @title Default title text
-a=int(input("inter a:"))
-b=int(input("inter b:"))
-sum=a+b
-print("sum is",sum)
-print("")
-menha=a-b
-print("menha is",menha)
-print("")
-zarb=a*b
-print("zarb is",zarb)
-print("")
-taqsim=a/b
-print("taqsim is",taqsim)
-print("")
-baqimandeh=a%b
-print("baqimandeh is",baqimandeh)
-print("")
-taqsim_sahih=a//b
-print("taqsim_sahih is",taqsim_sahih)
-print("")
+class Flight:
+    def __init__(self, flight_type, flight_time, round_trip, origin_country, destination_country):
+        self.flight_type = flight_type
+        self.flight_time = flight_time
+        self.round_trip = round_trip
+        self.origin_country = origin_country
+        self.destination_country = destination_country
+        self.seats = [0]*40
 
+class Passenger:
+    def __init__(self, name, flight_type, origin_country, destination_country, flight_time, seat_type):
+        self.name = name
+        self.flight_type = flight_type
+        self.origin_country = origin_country
+        self.destination_country = destination_country
+        self.flight_time = flight_time
+        self.seat_type = seat_type
 
+def reserve_seat(flight, passenger):
+    if passenger.seat_type == 1:
+        for i in range(20):
+            if flight.seats[i] == 0:
+                flight.seats[i] = 1
+                return i+1
+        for i in range(20, 40):
+            if flight.seats[i] == 0:
+                flight.seats[i] = 1
+                return i+1
+    else:
+        for i in range(20, 40):
+            if flight.seats[i] == 0:
+                flight.seats[i] = 1
+                return i+1
+        for i in range(20):
+            if flight.seats[i] == 0:
+                flight.seats[i] = 1
+                return i+1
+    return -1
 
-# s2   
+def display_info(flight, passenger, seat_number):
+    print("نوع پرواز: ", flight.flight_type)
+    print("ساعت پرواز: ", flight.flight_time)
+    print("رفت و برگشت: ", "بله" if flight.round_trip else "خیر")
+    print("کشور مبدا: ", flight.origin_country)
+    print("کشور مقصد: ", flight.destination_country)
+    print("\nاطلاعات کارت پرواز:")
+    print("نام مسافر: ", passenger.name)
+    print("نوع پرواز: ", passenger.flight_type)
+    print("کشور مبدا: ", passenger.origin_country)
+    print("کشور مقصد: ", passenger.destination_country)
+    print("ساعت پرواز: ", passenger.flight_time)
+    print("نوع صندلی: ", "فرست کلاس" if passenger.seat_type == 1 else "اکونومی")
+    print("شماره صندلی: ", seat_number)
 
-print("and :?", number1 == 4 & number2 == 5)
-print("or :?", number1 == 4 | number2 == 5)
+def main():
+    # ایجاد یک پرواز
+    flight_type = input("لطفا نوع پرواز را وارد کنید: ")
+    flight_time = input("لطفا ساعت پرواز را وارد کنید: ")
+    round_trip = input("آیا پرواز رفت و برگشت است؟ (بله/خیر): ") == "بله"
+    origin_country = input("لطفا کشور مبدا را وارد کنید: ")
+    destination_country = input("لطفا کشور مقصد را وارد کنید: ")
+    flight = Flight(flight_type, flight_time, round_trip, origin_country, destination_country)
+    
+    # ایجاد یک مسافر
+    name = input("لطفا نام مسافر را وارد کنید: ")
+    flight_type = input("لطفا نوع پرواز مسافر را وارد کنید: ")
+    origin_country = input("لطفا کشور مبدا مسافر را وارد کنید: ")
+    destination_country = input("لطفا کشور مقصد مسافر را وارد کنید: ")
+    flight_time = input("لطفا ساعت پرواز مسافر را وارد کنید: ")
+    seat_type = int(input("لطفا نوع صندلی را وارد کنید (1 برای فرست کلاس، 2 برای اکونومی): "))
+    passenger = Passenger(name, flight_type, origin_country, destination_country, flight_time, seat_type)
+    
+    # رزرو صندلی
+    seat_number = reserve_seat(flight, passenger)
+    
+    # اگر صندلی موجود بود، اطلاعات را نمایش می‌دهیم
+    if seat_number != -1:
+        display_info(flight, passenger, seat_number)
+    else:
+        print("متاسفانه صندلی خالی وجود ندارد.")
 
-
-
-# s3
-
-b1 = bin(number1)
-b2 = bin(number2)
-
-sum = b1 + b2
-menha = b1 - b2
-zarb = b1 * b2
-taqsim = b1 / br2
-mod = b1 % b2
-taqsim_sahih = b1 // b2
-tavan = b1 ** b2
-
-print("sum: ", sum)
-print("menha: ", menha)
-print("zarb: ", zarb)
-print("taqsim: ", taqsim)
-print("mod: ", mod)
-print("taqsim_sahih: ", taqsim_sahih)
-print("tavan: ", tavan)
-
-
-#s4
-
-
-a1 = oct(number1)
-a2 = oct(number2)
-
-sum = a1 + a2
-menha = a1 - a2
-zarb = a1 * a2
-taqsim = a1 / a2
-mod = a1 % a2
-taqsim_sahih = a1 // a2
-tavan = a1 ** a2
-
-print("sum: ", sum)
-print("menha: ", menha)
-print("zarb: ", zarb)
-print("taqsim: ", taqsim)
-print("mod: ", mod)
-print("taqsim_sahih: ", taqsim_sahih)
-print("tavan: ", tavan)
-
-
-#s5
-
-
-h1 = hex(number1)
-h2 = hex(number2)
-
-sum = h1 + h2
-menha = h1 - h2
-zarb = h1 * h2
-taqsim = h1 / h2
-mod = h1 % h2
-taqsim_sahih = h1 // h2
-tavan = h1 ** h2
-
-print("sum: ", sum)
-print("menha: ", menha)
-print("zarb: ", zarb)
-print("taqsim: ", taqsim)
-print("mod: ", mod)
-print("taqsim_sahih: ", taqsim_sahih)
-print("tavan: ", tavan)
+# اجرای تابع اصلی
+if __name__ == "__main__":
+    main()
