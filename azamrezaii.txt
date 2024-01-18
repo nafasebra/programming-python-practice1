@@ -1,51 +1,84 @@
-# Main Program
+class Flight:
+    def __init__(self, flight_type, flight_time, round_trip, origin_country, destination_country):
+        self.flight_type = flight_type
+        self.flight_time = flight_time
+        self.round_trip = round_trip
+        self.origin_country = origin_country
+        self.destination_country = destination_country
+        self.seats = [0]*40
+
+class Passenger:
+    def __init__(self, name, flight_type, origin_country, destination_country, flight_time, seat_type):
+        self.name = name
+        self.flight_type = flight_type
+        self.origin_country = origin_country
+        self.destination_country = destination_country
+        self.flight_time = flight_time
+        self.seat_type = seat_type
+
+def reserve_seat(flight, passenger):
+    if passenger.seat_type == 1:
+        for i in range(20):
+            if flight.seats[i] == 0:
+                flight.seats[i] = 1
+                return i+1
+        for i in range(20, 40):
+            if flight.seats[i] == 0:
+                flight.seats[i] = 1
+                return i+1
+    else:
+        for i in range(20, 40):
+            if flight.seats[i] == 0:
+                flight.seats[i] = 1
+                return i+1
+        for i in range(20):
+            if flight.seats[i] == 0:
+                flight.seats[i] = 1
+                return i+1
+    return -1
+
+def display_info(flight, passenger, seat_number):
+    print("نوع پرواز: ", flight.flight_type)
+    print("ساعت پرواز: ", flight.flight_time)
+    print("رفت و برگشت: ", "بله" if flight.round_trip else "خیر")
+    print("کشور مبدا: ", flight.origin_country)
+    print("کشور مقصد: ", flight.destination_country)
+    print("\nاطلاعات کارت پرواز:")
+    print("نام مسافر: ", passenger.name)
+    print("نوع پرواز: ", passenger.flight_type)
+    print("کشور مبدا: ", passenger.origin_country)
+    print("کشور مقصد: ", passenger.destination_country)
+    print("ساعت پرواز: ", passenger.flight_time)
+    print("نوع صندلی: ", "فرست کلاس" if passenger.seat_type == 1 else "اکونومی")
+    print("شماره صندلی: ", seat_number)
+
 def main():
-    flights = []
+    # ایجاد یک پرواز
+    flight_type = input("لطفا نوع پرواز را وارد کنید: ")
+    flight_time = input("لطفا ساعت پرواز را وارد کنید: ")
+    round_trip = input("آیا پرواز رفت و برگشت است؟ (بله/خیر): ") == "بله"
+    origin_country = input("لطفا کشور مبدا را وارد کنید: ")
+    destination_country = input("لطفا کشور مقصد را وارد کنید: ")
+    flight = Flight(flight_type, flight_time, round_trip, origin_country, destination_country)
+    
+    # ایجاد یک مسافر
+    name = input("لطفا نام مسافر را وارد کنید: ")
+    flight_type = input("لطفا نوع پرواز مسافر را وارد کنید: ")
+    origin_country = input("لطفا کشور مبدا مسافر را وارد کنید: ")
+    destination_country = input("لطفا کشور مقصد مسافر را وارد کنید: ")
+    flight_time = input("لطفا ساعت پرواز مسافر را وارد کنید: ")
+    seat_type = int(input("لطفا نوع صندلی را وارد کنید (1 برای فرست کلاس، 2 برای اکونومی): "))
+    passenger = Passenger(name, flight_type, origin_country, destination_country, flight_time, seat_type)
+    
+    # رزرو صندلی
+    seat_number = reserve_seat(flight, passenger)
+    
+    # اگر صندلی موجود بود، اطلاعات را نمایش می‌دهیم
+    if seat_number != -1:
+        display_info(flight, passenger, seat_number)
+    else:
+        print("متاسفانه صندلی خالی وجود ندارد.")
 
-    while True:
-        print("\n=== سیستم رزرو پرواز ===")
-        print("1. یک پرواز جدید اضافه کنید")
-        print("2. نمایش پروازهای موجود")
-        print("3. یک صندلی رزرو کنید")
-        print("4. خارج شدن")
-
-        choice = input("انتخاب خود را وارد کنید (1-4): ")
-
-        if choice == '1':
-            flight_type = input("نوع پرواز (داخلی/بین المللی) را وارد کنید: ").capitalize()
-            departure_time = input("زمان حرکت را وارد کنید: ")
-            origin_country = input("کشور مبدا را وارد کنید: ")
-            destination_country = input("کشور مقصد را وارد کنید: ")
-
-            flights = Flight(flight_type, departure_time, origin_country, destination_country)
-            flights.append(flight)
-
-        elif choice == '2':
-            if not flights:
-                print("هیچ پروازی موجود نیست")
-            else:
-                print("\nپروازهای موجود:")
-                for i, flight in enumerate(flights, start=1):
-                    print(f"پرواز {i}:")
-                    flight.display_flight_info()
-
-        elif choice == '3':
-            if not flights:
-                print("هیچ پروازی موجود نیست لطفا ابتدا یک پرواز اضافه کنید.")
-            else:
-                # Reserve a seat
-                flight_number = int(input("\nشماره پروازی را که می خواهید برای آن صندلی رزرو کنید وارد کنید: ")) - 1
-                seat_type = int(input("نوع صندلی را وارد کنید (1 برای فرست کلاس، 2 برای کلاس اکونومی): "))
-
-                if 0 <= flight_number < len(flights) and 1 <= seat_type <= 2:
-                    flights[flight_number].reserve_seat(seat_type)
-                else:
-                    print("نوع پرواز یا صندلی نامعتبر است.")
-
-        elif choice == '4':
-            print("خروج از برنامه")
-            break
-
-        else:
-            print("انتخاب نامعتبر لطفا عددی بین 1 تا 4 وارد کنید.")
-
+# اجرای تابع اصلی
+if __name__ == "__main__":
+    main()
